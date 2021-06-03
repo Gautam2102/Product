@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RedirectIfAuthenticated
+class RedirectIfAdmin
 {
     /**
      * Handle an incoming request.
@@ -30,7 +30,7 @@ class RedirectIfAuthenticated
             return redirect('/admin');
         }
         if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+            return redirect('/login/admin');
         }
 
         return $next($request);

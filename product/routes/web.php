@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +21,11 @@ Route::get('/', function () {
 });
 
 // 
+Route::get('/login/admin', [LoginController::class, 'showAdminLoginForm'])->name('login/admin');
+Route::get('/register/admin', [RegisterController::class,'showAdminRegisterForm'])->name('register/admin');
 
+Route::post('/register/admin', [RegisterController::class,'createAdmin']);
+Route::post('/login/admin', [LoginController::class,'adminLogin']);
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -30,5 +36,10 @@ Route::get('/editproduct/{id}',[HomeController::class,'editproduct'])->name('edi
 Route::post('/updateproduct',[HomeController::class,'updateproduct'])->name('updateproduct');
 Route::get('/deleteproduct/{id}',[HomeController::class,'deleteproduct'])->name('deleteproduct');
 Route::get('/imgvid/{id}',[HomeController::class,'imgvid'])->name('imgvid');
-Route::post('/importForm',[HomeController::class,'importForm'])->name('importForm');
-Route::get('/download',[HomeController::class,'export'])->name('download');
+Route::post('/import',[HomeController::class,'importForm'])->name('importForm');
+Route::get('download',[HomeController::class,'export'])->name('download');
+
+Route::group(['middleware' => 'admin'], function () {
+    
+    Route::view('/admin', 'admin');
+});

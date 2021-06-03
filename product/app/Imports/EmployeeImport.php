@@ -27,7 +27,6 @@ class EmployeeImport implements ToModel,withHeadingRow
             'price'=> $row['price'],
             'file'=>json_encode($file),
             'user_id'=>$user_id,
-            
         ]);
     }
 }

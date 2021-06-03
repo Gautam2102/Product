@@ -6,6 +6,7 @@ use App\Models\Product;
 use Auth;
 use File;
 use Excel;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Imports\EmployeeImport;
 use Illuminate\Http\Request;
 
@@ -69,7 +70,7 @@ class HomeController extends Controller
         $addproduct->user_id = $user_id;
         $addproduct->save();
         event(new UserCreate('one product added'));
-        // return redirect('addproduct')->with('success', 'One product added successfully');
+        return redirect('addproduct')->with('success', 'One product added successfully');
     }
     // show product
     public function showproduct()
@@ -129,26 +130,41 @@ class HomeController extends Controller
         $updateproduct->user_id = $user_id;
         $updateproduct->save();
         event(new UserCreate('one product updated'));
-        // return redirect('showproduct')->with('success', 'One product added successfully');
+        return redirect('showproduct')->with('success', 'One product added successfully');
     }
     // delete product
     public function deleteproduct($id)
     {
         $editproduct = Product::where('id', $id)->delete();
         event(new UserCreate('one product deleted'));
-        // return redirect('showproduct');
+        return redirect('showproduct')->with('success', 'One product deleted successfully');
     }
 
 
     public function importForm(Request $request)
     {
-        Excel::import(new EmployeeImport,$request->file);
+        // $request->validate([
+        //     'file'=> 'required|mimes:xlsx,csv'
+        // ]);
+         Excel::import(new EmployeeImport,$request->file);
     
-        return redirect('showproduct');
+         return redirect('showproduct')->with('success', 'file is imported successfully');
     }
+
 
     public function export()
     {
-        Excel::download(new showproduct)
+      return  Excel::download(new DataExport,'products.xlsx');
+
     }
 }
+class DataExport implements FromCollection
+    {
+        function collection()
+        {
+           
+            return Product::all();
+        }
+
+
+    }
