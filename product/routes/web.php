@@ -39,7 +39,5 @@ Route::get('/imgvid/{id}',[HomeController::class,'imgvid'])->name('imgvid');
 Route::post('/import',[HomeController::class,'importForm'])->name('importForm');
 Route::get('download',[HomeController::class,'export'])->name('download');
 
-Route::group(['middleware' => 'admin'], function () {
-    
-    Route::view('/admin', 'admin');
-});
+
+Route::get('Logout',[LoginController::class,'logout']);

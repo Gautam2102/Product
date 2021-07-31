@@ -27,6 +27,8 @@ class RedirectIfAdmin
         //     }
         // }
         if ($guard == "admin" && Auth::guard($guard)->check()) {
+            dd('fghj');
+
             return redirect('/admin');
         }
         if (Auth::guard($guard)->check()) {
